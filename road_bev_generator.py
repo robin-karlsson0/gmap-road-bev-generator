@@ -73,6 +73,7 @@ class RoadBEVGenerator():
             Boolean matrix representing the road BEV.
         '''
         # Generate a path between two points on the road to define a heading
+        #try:
         pnt_1 = self.snap_to_road([pnt_1])
         if len(pnt_1) == 0:
             return None
@@ -168,7 +169,7 @@ class RoadBEVGenerator():
 
         snapped_path = []
         if 'snappedPoints' not in res.json().keys():
-            print('Error: snap_to_road, not key snappedPoints')
+            print('ERROR: Could not snap point to road')
             return []
         for loc in res.json()['snappedPoints']:
             p = [loc['location']['latitude'], loc['location']['longitude']]

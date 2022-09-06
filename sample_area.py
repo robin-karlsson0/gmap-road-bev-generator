@@ -29,14 +29,17 @@ def sample_area(
 
     sample_idx = 0
     subdir_idx = 0
-    for _ in range(num_samples):
+    for abs_sample_idx in range(num_samples):
 
         # Try generating a BEV until sampled coordinates work
         # Note order due to (latitude, longitude) coordinate system
-        coord_0 = random.uniform(tl_coord[0], br_coord[0])
-        coord_1 = random.uniform(br_coord[1], tl_coord[1])
-        coord = (coord_0, coord_1)
         while True:
+            
+            coord_0 = random.uniform(tl_coord[0], br_coord[0])
+            coord_1 = random.uniform(br_coord[1], tl_coord[1])
+            coord = (coord_0, coord_1)
+            print(f'idx {abs_sample_idx} | ({coord_0:.3f}, {coord_1:.3f})')
+
             road_bev = road_bev_gen.generate(coord)
             if road_bev is not None:
                 break
