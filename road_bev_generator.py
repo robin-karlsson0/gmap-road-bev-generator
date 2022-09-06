@@ -2,6 +2,7 @@ import math
 import random
 import sys
 import time
+from importlib import invalidate_caches
 from io import BytesIO
 from typing import Tuple
 
@@ -72,10 +73,19 @@ class RoadBEVGenerator():
             Boolean matrix representing the road BEV.
         '''
         # Generate a path between two points on the road to define a heading
+        pnt_1 = self.snap_to_road([pnt_1])
+        if len(pnt_1) == 0:
+            return None
+        pnt_1 = pnt_1[0]
+
         th = random.uniform(0,360)
-        pnt_2 = [pnt_1[0]+0.0001*math.sin(th), pnt_1[1]+0.0001*math.cos(th)]
-        path = (pnt_1, pnt_2)
-        snapped_path = self.snap_to_road(path)
+        pnt_2 = [pnt_1[0]+0.00001*math.sin(th), pnt_1[1]+0.00001*math.cos(th)]
+        pnt_2 = self.snap_to_road([pnt_2])
+        if len(pnt_2) == 0:
+            return None
+        pnt_2 = pnt_2[0]
+
+        snapped_path = np.stack((pnt_1, pnt_2))
 
         # Generate raw raster map
         gmap = self.get_gmap(snapped_path[0])
